@@ -1,0 +1,36 @@
+header {
+  height: 15dvh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  nav {
+    margin-right: 2rem;
+    ul {
+      list-style-type: none;
+      display: flex;
+      gap: 1rem;
+      li {
+        .active {
+          color: goldenrod;
+        }
+        a {
+          color: #000;
+        }
+      }
+    }
+  }
+}
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer {
+  height: 20dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
