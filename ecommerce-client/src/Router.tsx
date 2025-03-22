@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Admin } from './pages/Admin';
+import { AdminPage } from './pages/AdminPage';
 import { Cart } from './pages/Cart';
 import { Home } from './pages/Home';
 import { Layout } from './pages/Layout';
 import { NotFound } from './pages/NotFound';
-import { Products } from './pages/Products';
+import { ProductsPage } from './pages/products/ProductsPage';
+import { ProductDetails } from './pages/products/ProductDetails';
 
 export const router = createBrowserRouter([
   {
@@ -17,12 +18,16 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/products',
-        element: <Products />,
+        path: '/products/',
+        element: <ProductsPage />,
+      },
+      {
+        path: '/products/:id',
+        element: <ProductDetails />,
       },
       {
         path: '/admin',
-        element: <Admin />,
+        element: <AdminPage />,
       },
       {
         path: '/cart',
