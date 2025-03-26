@@ -1,0 +1,69 @@
+// Spinner.scss
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px); // Subtle blur effect
+}
+
+.spinner-container {
+  text-align: center;
+  p {
+    margin-top: 1rem;
+    font-family: 'Arial', sans-serif;
+    color: #ff6b6b; // Pastel pink/orange (adjust to your theme)
+    font-weight: 500;
+  }
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3; // Light grey border
+  border-top: 4px solid #ff6b6b; // Colored top border
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Light mode (default)
+.spinner-overlay {
+  background: rgba(255, 255, 255, 0.8);
+  p {
+    color: #ff6b6b;
+  }
+}
+
+.spinner {
+  border-top-color: #ff6b6b;
+}
+
+// Dark mode
+[data-theme='dark'] {
+  .spinner-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    p {
+      color: #7b61ff;
+    } // Purple accent
+  }
+
+  .spinner {
+    border: 4px solid #333;
+    border-top-color: #7b61ff;
+  }
+}

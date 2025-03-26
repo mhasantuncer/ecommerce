@@ -4,7 +4,7 @@ import { useProduct } from '../../hooks/useProduct';
 import { IProduct } from '../../models/IProduct';
 import '../../styles/productdetails.scss';
 
-export const ProductDetails = () => {
+const ProductDetails = () => {
   const [product, setProduct] = useState<IProduct | null>(null);
   const { id } = useParams();
   const { isLoading, error, fetchProductByIdHandler } = useProduct();
@@ -41,3 +41,5 @@ export const ProductDetails = () => {
     </>
   );
 };
+
+export default ProductDetails;

@@ -4,11 +4,7 @@ import '../../styles/productspage.scss';
 import { useProduct } from '../../hooks/useProduct';
 import { Link } from 'react-router-dom';
 
-export const ProductsPage = () => {
-  // const [products, setProducts] = useState<IProduct[]>([]);
-  // const [loading, setLoading] = useState<boolean>(true);
-  // const [error, setError] = useState<Error | null>(null);
-
+const ProductsPage = () => {
   const { products, isLoading, error, fetchProductsHandler } = useProduct();
 
   useEffect(() => {
@@ -36,3 +32,5 @@ export const ProductsPage = () => {
     </div>
   );
 };
+
+export default ProductsPage;

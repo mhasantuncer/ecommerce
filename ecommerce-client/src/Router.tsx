@@ -1,11 +1,16 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { AdminPage } from './pages/AdminPage';
-import { Cart } from './pages/Cart';
-import { Home } from './pages/Home';
 import { Layout } from './pages/Layout';
-import { NotFound } from './pages/NotFound';
-import { ProductsPage } from './pages/products/ProductsPage';
-import { ProductDetails } from './pages/products/ProductDetails';
+import NotFound from './pages/NotFound';
+import { Spinner } from './components/Spinner';
+import { ProtectedRoute } from './components/ProtectedRoute';
+
+// Lazy-loaded pages
+const Home = lazy(() => import('./pages/Home'));
+const ProductsPage = lazy(() => import('./pages/products/ProductsPage'));
+const ProductDetails = lazy(() => import('./pages/products/ProductDetails'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
+const Cart = lazy(() => import('./pages/Cart'));
 
 export const router = createBrowserRouter([
   {
@@ -14,24 +19,51 @@ export const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        path: '/',
-        element: <Home />,
+        index: true,
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
-        path: '/products/',
-        element: <ProductsPage />,
+        path: 'products',
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <ProductsPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: ':id',
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <ProductDetails />
+              </Suspense>
+            ),
+          },
+        ],
       },
       {
-        path: '/products/:id',
-        element: <ProductDetails />,
+        path: 'admin',
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          </Suspense>
+        ),
       },
       {
-        path: '/admin',
-        element: <AdminPage />,
-      },
-      {
-        path: '/cart',
-        element: <Cart />,
+        path: 'cart',
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <Cart />
+          </Suspense>
+        ),
       },
     ],
   },

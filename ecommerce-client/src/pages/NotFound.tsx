@@ -1,3 +1,5 @@
-export const NotFound = () => {
+const NotFound = () => {
   return <div>Oops! 404 - The page you're looking for does not exist!</div>;
 };
+
+export default NotFound;
