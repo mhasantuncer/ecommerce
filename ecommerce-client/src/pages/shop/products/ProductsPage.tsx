@@ -24,7 +24,7 @@ const ProductsPage = () => {
               <h3>{product.name}</h3>
               <p>Price: {product.price}</p>
               <p>{product.stock > 0 ? 'In Stock' : 'No Stock'}</p>
-              <Link to={'/products/' + product.id}>Read more...</Link>
+              <Link to={'/shop/products/' + product.id}>Read more...</Link>
             </div>
           );
         })}

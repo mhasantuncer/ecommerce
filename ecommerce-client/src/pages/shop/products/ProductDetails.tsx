@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useProduct } from '../../hooks/useProduct';
-import { IProduct } from '../../models/IProduct';
-import '../../styles/productdetails.scss';
+import { useProduct } from '../../../hooks/useProduct';
+import { IProduct } from '../../../models/IProduct';
+import '../../../styles/productdetails.scss';
+import { Spinner } from '../../../components/Spinner';
 
 const ProductDetails = () => {
   const [product, setProduct] = useState<IProduct | null>(null);
@@ -16,28 +17,42 @@ const ProductDetails = () => {
   if (!product) return <p>Product not found.</p>;
   return (
     <>
-      {error && <p>Error: {error.message || 'An unknown error occurred'}</p>}
-      {isLoading && <h4>Loading...</h4>}
-      <div className="product-card-detail" key={product.id}>
-        <div>
-          <img src={product.image} alt={product.name} />
+      {error && (
+        <p className="error-message" role="alert">
+          Error: {error.message || 'An unknown error occurred'}
+        </p>
+      )}
+      {isLoading ? (
+        <div className="loading-indicator">
+          <Spinner />
         </div>
-        <div>
-          <h3>{product.name}</h3>
-          <p>
-            <b>Description:</b> {product.description}
-          </p>
-          <p>
-            <b>Category:</b> {product.category}
-          </p>
-          <p>
-            <b>Price:</b> {product.price}
-          </p>
-          <p>
-            <b>Stock:</b> {product.stock}
-          </p>
+      ) : product ? (
+        <div className="product-card-detail">
+          <div>
+            <img src={product.image} alt={product.name} />
+          </div>
+          <div>
+            <h3>{product.name}</h3>
+            <p className={product.stock > 0 ? 'in-stock' : 'out-of-stock'}>
+              {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+            </p>
+            <p>
+              <b>Description:</b> {product.description}
+            </p>
+            <p>
+              <b>Category:</b> {product.category}
+            </p>
+            <p>
+              <b>Price:</b> ${product.price.toFixed(2)}
+            </p>
+            <button className="add-to-cart">
+              <span>Add to Cart</span>
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <p>Product not found.</p>
+      )}
     </>
   );
 };

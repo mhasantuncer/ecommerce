@@ -1,46 +1,172 @@
+@use '../styles/base/mixins' as mix;
+
 .product-card-detail {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 40px auto;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    padding: 3rem;
+  }
 
   img {
-    width: 250px;
+    width: 100%;
     height: auto;
-    border-radius: 10px;
-    object-fit: cover;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f8f9fa;
+    padding: 1rem;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: zoom-in;
+
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
   }
 
   div {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
+    gap: 1.5rem;
 
-  h3 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: 16px;
-    color: #555;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-
-    img {
-      width: 100%;
-      max-width: 300px;
+    h3 {
+      font-size: 2rem;
+      color: #333;
+      margin: 0;
+      transition: color 0.3s ease;
     }
+
+    p {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      transition: transform 0.3s ease;
+
+      b {
+        color: #ff6b6b;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      &:hover {
+        transform: translateX(5px);
+      }
+    }
+  }
+}
+
+/* Add to Cart Button */
+.add-to-cart {
+  @include mix.cta-button; // Inherits your button styles
+  align-self: center;
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Stock Status with Animation */
+.stock-status {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
+
+  &.in-stock {
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    &::before {
+      content: '✓ ';
+    }
+  }
+
+  &.out-of-stock {
+    background: #ffebee;
+    color: #c62828;
+
+    &::before {
+      content: '✕ ';
+    }
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Loading State Enhancements */
+.loading-indicator {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Error State */
+.error-message {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-3px);
+  }
+  40%,
+  60% {
+    transform: translateX(3px);
   }
 }

@@ -1,34 +1,26 @@
 // src/pages/shop/Home.tsx
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { fetchAllProducts } from '../../services/productService';
-import { IProduct } from '../../models/IProduct';
+import { ProductCard } from '../../components/ProductCard';
 import '../../styles/core/home.scss';
+import { IProduct } from '../../models/IProduct';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        console.log('Fetching products...'); // Debug log
         const products = await fetchAllProducts();
-        console.log('All products:', products); // Debug log
-
-        const featured = products.slice(0, 3);
-        console.log('Featured products:', featured); // Debug log
-
-        setFeaturedProducts(featured);
-      } catch (err) {
-        console.error('Error:', err); // Debug log
-        setError('Failed to load products');
+        setFeaturedProducts(products.slice(0, 3)); // First 3 products
+      } catch (error) {
+        console.error('Error loading products:', error);
       } finally {
         setLoading(false);
       }
     };
-
     loadProducts();
   }, []);
 
@@ -44,42 +36,22 @@ export default function Home() {
 
       <section className="featured-section">
         <h2>Seasonal Specials</h2>
-
-        {error && <div className="error-message">{error}</div>}
-
         <div className="featured-grid">
-          {loading ? (
-            // Show placeholders while loading
-            <>
-              <div className="featured-item placeholder"></div>
-              <div className="featured-item placeholder"></div>
-              <div className="featured-item placeholder"></div>
-            </>
-          ) : (
-            // Show actual products when loaded
-            featuredProducts.map((product) => (
-              <div key={product.id} className="featured-item">
-                {product.image && (
-                  <img
-                    src={product.image || '/placeholder-product.jpg'}
-                    alt={product.name}
-                    className="product-image"
-                    style={{ height: '180px', objectFit: 'cover' }} // Ensure consistent sizing
-                  />
-                )}
-                <h3>{product.name}</h3>
-                <p className="price">${product.price.toFixed(2)}</p>
-                <div className="product-actions">
-                  <Link
-                    to={`/shop/products/${product.id}`}
-                    className="view-button"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </div>
-            ))
-          )}
+          {loading
+            ? Array(3)
+                .fill(0)
+                .map((_, i) => (
+                  <div key={i} className="product-card loading">
+                    <div className="image-container placeholder"></div>
+                    <div className="product-info">
+                      <div className="placeholder-text"></div>
+                      <div className="placeholder-text short"></div>
+                    </div>
+                  </div>
+                ))
+            : featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
         </div>
       </section>
     </div>

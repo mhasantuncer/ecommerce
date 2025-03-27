@@ -11,3 +11,25 @@
   grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
   gap: $spacing-md; // Now properly accesses the variable
 }
+
+// src/styles/base/_mixins.scss
+@mixin cta-button {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background: #ff6b6b;
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: white;
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+    transform: translateY(-2px);
+  }
+}

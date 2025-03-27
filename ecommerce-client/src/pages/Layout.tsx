@@ -20,7 +20,7 @@ export const Layout = () => {
             </li>
             <li className="nav-item">
               <NavLink
-                to={'/products'}
+                to={'/shop/products'}
                 className={({ isActive }) =>
                   isActive ? 'nav-link active' : 'nav-link'
                 }
