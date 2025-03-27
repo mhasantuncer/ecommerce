@@ -14,7 +14,7 @@ export default function Home() {
     const loadProducts = async () => {
       try {
         const products = await fetchAllProducts();
-        setFeaturedProducts(products.slice(0, 3)); // First 3 products
+        setFeaturedProducts(products.slice(0, 8)); // First 3 products
       } catch (error) {
         console.error('Error loading products:', error);
       } finally {

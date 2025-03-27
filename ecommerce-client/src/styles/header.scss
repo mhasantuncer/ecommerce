@@ -1,8 +1,4 @@
-.layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+@use './base/variables' as *;
 
 .header {
   background: white;
@@ -27,21 +23,22 @@
 
 .nav-list {
   display: flex;
+  align-items: center; // Center all items vertically
+  height: 100%; // Take full nav height
   gap: 1.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .nav-item {
-  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
 
   .nav-link {
     color: #333;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
-    padding: 0.5rem 0;
+    padding: 0.5rem 0.25rem;
     position: relative;
 
     &:hover {
@@ -74,9 +71,10 @@
   cursor: pointer;
   color: #333;
   font-weight: 500;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
   display: flex;
   align-items: center;
+  height: 100%;
   gap: 0.5rem;
   transition: color 0.3s ease;
 
@@ -102,18 +100,6 @@
   font-weight: bold;
 }
 
-.main-content {
-  flex: 1;
-  padding: 2rem 0;
-}
-
-.footer {
-  background: #f8f9fa;
-  padding: 2rem;
-  text-align: center;
-  color: #666;
-}
-
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .nav {
@@ -130,5 +116,83 @@
     .nav-link {
       padding: 0.5rem;
     }
+  }
+}
+
+/* Mobile Menu Styles */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #333;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+  }
+
+  &[aria-expanded='true'] {
+    span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    align-self: flex-end;
+  }
+
+  .nav-container {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: auto;
+    min-width: 30%;
+    height: auto;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 4rem 1.5rem;
+    transition: right 0.3s ease;
+    z-index: 1000;
+
+    &.open {
+      right: 0;
+      background-color: $bg-light;
+    }
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 2rem;
+    gap: 1.5rem;
+  }
+  .nav-item {
+    .nav-link {
+      padding: 0.25rem; // Tighter padding
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .nav {
+    padding: 0 2rem; // Consistent side padding
+  }
+
+  .nav-brand {
+    margin-right: auto; // Pushes brand left, items right
   }
 }

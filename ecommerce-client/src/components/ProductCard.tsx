@@ -14,6 +14,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           src={product.image || placeholderImage}
           alt={product.name}
           className="product-image"
+          style={{
+            maxWidth: '100%',
+            maxHeight: '100%',
+            objectFit: 'contain',
+          }}
           onError={(e) => {
             (e.target as HTMLImageElement).src = placeholderImage;
           }}
