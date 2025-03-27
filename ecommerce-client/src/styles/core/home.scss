@@ -1,0 +1,138 @@
+@use '../base/variables' as *;
+@use '../base/mixins' as mix;
+
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 80vh;
+
+  .hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+      url('@/assets/3d-delivery-robot-working.jpg');
+    background-size: cover;
+    background-position: center 30%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h1 {
+    color: #e0e0e0;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  p {
+    color: #e0e0e0;
+
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background-color: $primary-color;
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    background-color: transparent;
+    border-color: white;
+    transform: translateY(-3px);
+  }
+}
+
+.featured-section {
+  margin-top: 4rem;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.2rem;
+    color: $text-dark;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: $primary-color;
+    }
+  }
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.featured-item {
+  border: 1px solid #eee; // Add border if images are white
+  padding: 1rem;
+  height: 350px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  &.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #f5f5f5, #e0e0e0);
+    color: #999;
+    font-size: 1.2rem;
+  }
+  .product-image {
+    width: 100%;
+    height: 180px;
+    background: #f5f5f5; // Fallback color
+  }
+}
+
+.error-message {
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.price {
+  font-weight: bold;
+  color: #e67e22;
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.product-actions {
+  margin-top: 1rem;
+}

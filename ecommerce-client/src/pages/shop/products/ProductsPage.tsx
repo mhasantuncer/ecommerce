@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { IProduct } from '../../models/IProduct';
-import '../../styles/productspage.scss';
-import { useProduct } from '../../hooks/useProduct';
+import { IProduct } from '../../../models/IProduct';
+import '../../../styles/productspage.scss';
+import { useProduct } from '../../../hooks/useProduct';
 import { Link } from 'react-router-dom';
 
 const ProductsPage = () => {

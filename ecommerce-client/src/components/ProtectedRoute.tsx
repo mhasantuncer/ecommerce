@@ -1,7 +1,11 @@
-import { JSX } from 'react';
 import { Navigate } from 'react-router-dom';
 
-export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const token = localStorage.getItem('token');
-  return token ? children : <Navigate to="/" replace />;
+interface Props {
+  children: React.ReactNode;
+}
+
+export const ProtectedRoute = ({ children }: Props) => {
+  const isAuthenticated = true; // Replace with real auth logic
+
+  return isAuthenticated ? children : <Navigate to="/" />;
 };

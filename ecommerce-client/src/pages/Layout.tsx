@@ -3,29 +3,64 @@ import '../styles/layout.scss';
 
 export const Layout = () => {
   return (
-    <>
-      <header>
-        <nav>
-          <ul>
-            <li>
-              <NavLink to={'/'}>Home</NavLink>
+    <div className="layout">
+      <header className="header">
+        <nav className="nav">
+          <div className="nav-brand">E-Commerce Shop</div>
+          <ul className="nav-list">
+            <li className="nav-item">
+              <NavLink
+                to={'/'}
+                className={({ isActive }) =>
+                  isActive ? 'nav-link active' : 'nav-link'
+                }
+              >
+                Home
+              </NavLink>
             </li>
-            <li>
-              <NavLink to={'/products'}>Products</NavLink>
+            <li className="nav-item">
+              <NavLink
+                to={'/products'}
+                className={({ isActive }) =>
+                  isActive ? 'nav-link active' : 'nav-link'
+                }
+              >
+                Shop
+              </NavLink>
             </li>
-            <li>
-              <NavLink to={'/admin'}>Admin</NavLink>
+            <li className="nav-item">
+              <NavLink
+                to={'/admin'}
+                className={({ isActive }) =>
+                  isActive ? 'nav-link active' : 'nav-link'
+                }
+              >
+                Admin Dashboard
+              </NavLink>
             </li>
-            <li>
-              <NavLink to={'/cart'}>Cart</NavLink>
+            <li className="nav-item">
+              <NavLink
+                to={'/cart'}
+                className={({ isActive }) =>
+                  isActive ? 'nav-link active' : 'nav-link'
+                }
+              >
+                Cart
+              </NavLink>
             </li>
           </ul>
         </nav>
       </header>
-      <main>
+
+      <main className="main-content">
         <Outlet />
       </main>
-      <footer>This is the footer</footer>
-    </>
+
+      <footer className="footer">
+        <p>
+          © {new Date().getFullYear()} E-Commerce Shop. All rights reserved.
+        </p>
+      </footer>
+    </div>
   );
 };
