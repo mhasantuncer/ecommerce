@@ -1,9 +1,11 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Layout } from './pages/Layout';
 import NotFound from './pages/NotFound';
 import { Spinner } from './components/Spinner';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthLayout } from './pages/auth/AuthLayout';
+import Login from './pages/auth/Login';
 
 // Lazy-loaded pages
 const Home = lazy(() => import('./pages/shop/Home'));
@@ -14,7 +16,7 @@ const ProductDetails = lazy(
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const Cart = lazy(() => import('./pages/shop/Cart'));
 
-// 🛠️ Admin Pages
+// Admin Pages
 const ManageProducts = lazy(
   () => import('./pages/admin/products/ManageProducts')
 );
@@ -81,8 +83,21 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
       },
-
-      // 🛠️ Admin Routes
+      {
+        path: 'auth',
+        element: <AuthLayout />,
+        children: [
+          {
+            path: 'login',
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <Login />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      // Protected Admin Routes - Simplified Structure
       {
         path: 'admin',
         element: (
@@ -93,6 +108,10 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
         children: [
+          {
+            index: true,
+            element: <Navigate to="products" replace />,
+          },
           {
             path: 'products',
             children: [

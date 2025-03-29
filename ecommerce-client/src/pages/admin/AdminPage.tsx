@@ -1,10 +1,17 @@
+// src/pages/admin/AdminPage.tsx
 import { Link } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminPage = () => {
+  const { logout } = useAuth();
+
   return (
     <div>
-      <h1>Admin Dashboard</h1>
+      <header>
+        <h1>Admin Dashboard</h1>
+        <button onClick={logout}>Logout</button>
+      </header>
       <nav>
         <ul>
           <li>
@@ -18,7 +25,9 @@ const AdminPage = () => {
           </li>
         </ul>
       </nav>
-      <Outlet />
+      <div className="admin-content">
+        <Outlet />
+      </div>
     </div>
   );
 };
