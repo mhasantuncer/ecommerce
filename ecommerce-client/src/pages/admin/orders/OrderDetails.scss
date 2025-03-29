@@ -1,0 +1,173 @@
+// src/pages/admin/orders/OrderDetails.scss
+.order-details-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header-section {
+    margin-bottom: 2rem;
+    position: relative;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #2196f3;
+      text-decoration: none;
+      margin-bottom: 1rem;
+
+      .icon {
+        font-size: 1.2rem;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .page-title {
+      margin: 0;
+      color: #333;
+    }
+  }
+
+  .error-message {
+    color: #f44336;
+    padding: 1rem;
+    background: #ffebee;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .order-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5rem;
+      }
+
+      p {
+        margin: 0.5rem 0;
+        color: #555;
+
+        strong {
+          color: #333;
+          min-width: 120px;
+          display: inline-block;
+        }
+      }
+
+      .status-control {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        label {
+          strong {
+            min-width: auto;
+          }
+        }
+
+        .status-select {
+          padding: 0.5rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          min-width: 150px;
+        }
+
+        .update-button {
+          padding: 0.5rem 1rem;
+          background: #4caf50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background 0.3s;
+
+          &:hover {
+            background: #3e8e41;
+          }
+        }
+      }
+    }
+  }
+
+  .order-items-section {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+      }
+
+      .product-link {
+        color: #2196f3;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      tfoot {
+        .total-label {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .total-amount {
+          font-weight: bold;
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+
+  .not-found,
+  .auth-warning {
+    padding: 2rem;
+    text-align: center;
+    color: #f44336;
+    background: #ffebee;
+    border-radius: 8px;
+    margin-top: 2rem;
+  }
+}

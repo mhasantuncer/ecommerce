@@ -1,4 +1,6 @@
-@use 'variables' as *;
+// _mixins.scss
+// src/styles/base/_mixins.scss
+@use 'variables' as vars;
 
 @mixin flex-center {
   display: flex;
@@ -9,14 +11,13 @@
 @mixin responsive-grid($min-width) {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
-  gap: $spacing-md; // Now properly accesses the variable
+  gap: vars.$spacing-md;
 }
 
-// src/styles/base/_mixins.scss
 @mixin cta-button {
   display: inline-block;
   padding: 0.7rem 1.5rem;
-  background: #ff6b6b;
+  background: vars.$primary-color;
   color: white;
   border-radius: 50px;
   text-decoration: none;
@@ -28,8 +29,8 @@
 
   &:hover {
     background: white;
-    color: #ff6b6b;
-    border-color: #ff6b6b;
+    color: vars.$primary-color;
+    border-color: vars.$primary-color;
     transform: translateY(-2px);
   }
 }

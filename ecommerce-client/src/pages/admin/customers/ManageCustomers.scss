@@ -167,3 +167,49 @@
     color: #e67e22;
   }
 }
+
+/* Add to your ManageCustomers.scss */
+.admin-header {
+  margin-bottom: 1.5rem;
+
+  .breadcrumb {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+
+    a {
+      color: #3498db;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    span {
+      margin: 0 0.3rem;
+    }
+  }
+
+  .page-title {
+    margin: 0;
+  }
+}
+
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+
+  .action-buttons {
+    display: flex;
+    gap: 0.8rem;
+  }
+}
+
+.icon {
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}

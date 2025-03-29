@@ -1,0 +1,159 @@
+// src/pages/admin/orders/ManageOrders.scss
+.manage-orders-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    .refresh-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #3e8e41;
+      }
+
+      .icon {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .controls-container {
+    margin-bottom: 2rem;
+
+    .filters-container {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .search-container {
+        position: relative;
+        flex-grow: 1;
+
+        .search-input {
+          width: 100%;
+          padding: 0.5rem 1rem 0.5rem 2.5rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+
+        .search-icon {
+          position: absolute;
+          left: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #777;
+        }
+      }
+
+      .status-filter {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        label {
+          white-space: nowrap;
+        }
+
+        .filter-select {
+          padding: 0.5rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          min-width: 150px;
+        }
+      }
+    }
+  }
+
+  .table-container {
+    overflow-x: auto;
+
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+      }
+
+      .status-select {
+        padding: 0.25rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+      }
+
+      .actions-cell {
+        white-space: nowrap;
+
+        .view-button {
+          color: #2196f3;
+          text-decoration: none;
+          padding: 0.25rem 0.5rem;
+          border-radius: 4px;
+          transition: background 0.3s;
+
+          &:hover {
+            background: #e3f2fd;
+          }
+        }
+      }
+    }
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    .pagination-button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover:not(:disabled) {
+        background: #f5f5f5;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .error-message {
+    color: #f44336;
+    padding: 1rem;
+    background: #ffebee;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+}

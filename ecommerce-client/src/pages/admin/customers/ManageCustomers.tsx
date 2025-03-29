@@ -4,7 +4,8 @@ import { useAuth } from '../../../context/AuthContext';
 import { ICustomer } from '../../../models/ICustomer';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './ManageCustomers.scss'; // We'll create this CSS file
+import './ManageCustomers.scss';
+import { FiPlus, FiSearch } from 'react-icons/fi';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -84,7 +85,9 @@ const ManageCustomers = () => {
 
   return (
     <div className="manage-customers-container">
-      <h1 className="page-title">Manage Customers</h1>
+      <div className="admin-header">
+        <h1 className="page-title">Manage Customers</h1>
+      </div>
 
       <div className="controls-container">
         <div className="search-container">
@@ -96,12 +99,14 @@ const ManageCustomers = () => {
             className="search-input"
           />
           <button onClick={handleSearch} className="search-button">
-            Search
+            <FiSearch className="icon" /> Search
           </button>
         </div>
-        <Link to="/admin/customers/create" className="create-button">
-          + Create Customer
-        </Link>
+        <div className="action-buttons">
+          <Link to="/admin/customers/create" className="create-button">
+            <FiPlus className="icon" /> Create Customer
+          </Link>
+        </div>
       </div>
 
       {loading ? (

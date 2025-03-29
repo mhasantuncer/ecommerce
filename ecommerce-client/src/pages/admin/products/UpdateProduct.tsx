@@ -1,89 +1,162 @@
+// src/pages/admin/products/UpdateProduct.tsx
 import { useEffect, useState } from 'react';
-import { useProduct } from '@/hooks/useProduct';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { IProduct } from '../../../models/IProduct';
+import './UpdateProduct.scss';
 
-export default function UpdateProduct() {
-  const { updateProductHandler, fetchProductByIdHandler } = useProduct();
+const UpdateProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    name: '',
-    description: '',
-    price: 0,
-    stock: 0,
-    category: '',
-    image: '',
-  });
+  const location = useLocation();
+  const [product, setProduct] = useState<IProduct | null>(null);
+  const [formData, setFormData] = useState<Partial<IProduct>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    if (id) {
-      fetchProductByIdHandler(id).then((data) => setForm(data));
-    }
-  }, [id, fetchProductByIdHandler]);
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/products/${id}`
+        );
+        setProduct(response.data);
+        setFormData(response.data);
+      } catch (err) {
+        setError('Failed to load product');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    fetchProduct();
+  }, [id]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'price' || name === 'stock' ? Number(value) : value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateProductHandler(id!, form);
-    navigate('/admin/products');
+    setLoading(true);
+    setError('');
+
+    try {
+      await axios.patch(`http://localhost:3000/products/${id}`, formData);
+      navigate('/admin/products', {
+        state: { success: 'Product updated successfully!' },
+      });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to update product');
+    } finally {
+      setLoading(false);
+    }
   };
 
+  if (loading)
+    return <div className="loading-message">Loading product data...</div>;
+  if (!product) return <div className="error-message">Product not found</div>;
+
   return (
-    <Card className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Update Product</h2>
-      <form onSubmit={handleSubmit} className="grid gap-4">
-        <Input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Name"
-          required
-        />
-        <Input
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description"
-          required
-        />
-        <Input
-          name="price"
-          type="number"
-          value={form.price}
-          onChange={handleChange}
-          placeholder="Price"
-          required
-        />
-        <Input
-          name="stock"
-          type="number"
-          value={form.stock}
-          onChange={handleChange}
-          placeholder="Stock"
-          required
-        />
-        <Input
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          placeholder="Category"
-          required
-        />
-        <Input
-          name="image"
-          value={form.image}
-          onChange={handleChange}
-          placeholder="Image URL"
-          required
-        />
-        <Button type="submit">Update Product</Button>
+    <div className="update-product">
+      <h2>Update Product</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Name *</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name || ''}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Description</label>
+          <textarea
+            name="description"
+            value={formData.description || ''}
+            onChange={handleChange}
+            rows={4}
+          />
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label>Price *</label>
+            <input
+              type="number"
+              name="price"
+              min="0"
+              step="0.01"
+              value={formData.price || 0}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Stock *</label>
+            <input
+              type="number"
+              name="stock"
+              min="0"
+              value={formData.stock || 0}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Category *</label>
+          <input
+            type="text"
+            name="category"
+            value={formData.category || ''}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Image URL</label>
+          <input
+            type="url"
+            name="image"
+            value={formData.image || ''}
+            onChange={handleChange}
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
+        {location.state?.success && (
+          <div className="success-message">{location.state.success}</div>
+        )}
+
+        {error && <div className="error-message">{error}</div>}
+
+        <div className="form-actions">
+          <button type="submit" disabled={loading}>
+            {loading ? 'Updating...' : 'Update Product'}
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/admin/products')}
+            disabled={loading}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
-    </Card>
+    </div>
   );
-}
+};
+
+export default UpdateProduct;

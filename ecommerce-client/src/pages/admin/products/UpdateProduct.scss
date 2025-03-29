@@ -1,0 +1,119 @@
+// Both files can share these styles
+@use '../../../styles/base/variables' as vars;
+@use '../../../styles/base/mixins' as mix;
+
+.create-product,
+.update-product {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin-bottom: 2rem;
+    color: vars.$primary-color;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input[type='text'],
+    input[type='number'],
+    input[type='url'],
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+
+      &:focus {
+        border-color: vars.$primary-color;
+        outline: none;
+      }
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1.5rem;
+
+    .form-group {
+      flex: 1;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &[type='submit'] {
+        background-color: vars.$primary-color;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: darken(vars.$primary-color, 10%);
+        }
+      }
+
+      &[type='button'] {
+        background-color: #f0f0f0;
+
+        &:hover:not(:disabled) {
+          background-color: #e0e0e0;
+        }
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .error-message {
+    color: vars.$error-color;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: rgba(vars.$error-color, 0.1);
+    border-radius: 4px;
+  }
+
+  .loading-message {
+    text-align: center;
+    padding: 2rem;
+    color: vars.$primary-color;
+  }
+}
+
+.success-message {
+  color: vars.$success-color;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(vars.$success-color, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid vars.$success-color;
+}

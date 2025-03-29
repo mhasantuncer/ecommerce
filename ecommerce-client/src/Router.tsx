@@ -13,10 +13,11 @@ const ProductsPage = lazy(() => import('./pages/shop/products/ProductsPage'));
 const ProductDetails = lazy(
   () => import('./pages/shop/products/ProductDetails')
 );
-const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const Cart = lazy(() => import('./pages/shop/Cart'));
 
-// Admin Pages
+// Admin Components
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const ManageProducts = lazy(
   () => import('./pages/admin/products/ManageProducts')
 );
@@ -26,7 +27,6 @@ const CreateProduct = lazy(
 const UpdateProduct = lazy(
   () => import('./pages/admin/products/UpdateProduct')
 );
-
 const ManageCustomers = lazy(
   () => import('./pages/admin/customers/ManageCustomers')
 );
@@ -36,7 +36,6 @@ const CreateCustomer = lazy(
 const UpdateCustomer = lazy(
   () => import('./pages/admin/customers/UpdateCustomer')
 );
-
 const ManageOrders = lazy(() => import('./pages/admin/orders/ManageOrders'));
 const OrderDetails = lazy(() => import('./pages/admin/orders/OrderDetails'));
 
@@ -97,20 +96,24 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // Protected Admin Routes - Simplified Structure
+      // Admin Routes with dedicated AdminLayout
       {
         path: 'admin',
         element: (
           <Suspense fallback={<Spinner />}>
             <ProtectedRoute>
-              <AdminPage />
+              <AdminLayout /> {/* Using dedicated admin layout */}
             </ProtectedRoute>
           </Suspense>
         ),
         children: [
           {
             index: true,
-            element: <Navigate to="products" replace />,
+            element: (
+              <Suspense fallback={<Spinner />}>
+                <AdminDashboard />
+              </Suspense>
+            ),
           },
           {
             path: 'products',
@@ -191,7 +194,17 @@ export const router = createBrowserRouter([
               },
             ],
           },
+          // Redirect invalid admin paths to dashboard
+          {
+            path: '*',
+            element: <Navigate to="/admin" replace />,
+          },
         ],
+      },
+      // Global 404 catch
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

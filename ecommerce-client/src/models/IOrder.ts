@@ -15,6 +15,15 @@ export interface IOrder {
   order_status: 'pending' | 'processing' | 'completed' | 'cancelled';
   created_at: string;
   order_items: IOrderItem[];
+  // Add these new fields
+  customer_firstname?: string;
+  customer_lastname?: string;
+  customer_email?: string;
+  customer_phone?: string;
+  customer_street_address?: string;
+  customer_postal_code?: string;
+  customer_city?: string;
+  customer_country?: string;
 }
 
 export type OrderCreate = Pick<
