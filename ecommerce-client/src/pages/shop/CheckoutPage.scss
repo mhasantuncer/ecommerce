@@ -29,3 +29,28 @@
   margin-bottom: 1rem;
   grid-column: 1 / -1;
 }
+
+.payment-section {
+  margin-top: 2rem;
+  text-align: center;
+
+  .pay-button {
+    background: #6772e5;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #5469d4;
+    }
+
+    &:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+  }
+}
