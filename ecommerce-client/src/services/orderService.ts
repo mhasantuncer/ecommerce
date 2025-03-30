@@ -17,6 +17,20 @@ export const createOrder = async (orderData: {
   return handleRequest(axios.post('http://localhost:3000/orders', payload));
 };
 
+// Add this to your existing orderService.ts
+export const updateOrder = async (
+  orderId: number,
+  updateData: {
+    payment_status?: string;
+    payment_id?: string;
+    order_status?: string;
+  }
+): Promise<{ message: string }> => {
+  return handleRequest(
+    axios.patch(`http://localhost:3000/orders/${orderId}`, updateData)
+  );
+};
+
 // Update order with Stripe session ID
 export const updateOrderWithSessionId = async (
   orderId: number,

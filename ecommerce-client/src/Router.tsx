@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthLayout } from './pages/auth/AuthLayout';
 import Login from './pages/auth/Login';
 import CheckoutPage from './pages/shop/CheckoutPage';
+import OrderConfirmation from './pages/shop/OrderConfirmation';
 
 // Lazy-loaded pages
 const Home = lazy(() => import('./pages/shop/Home'));
@@ -74,6 +75,14 @@ export const router = createBrowserRouter([
             ),
           },
         ],
+      },
+      {
+        path: 'order-confirmation',
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <OrderConfirmation />
+          </Suspense>
+        ),
       },
       {
         path: 'checkout',

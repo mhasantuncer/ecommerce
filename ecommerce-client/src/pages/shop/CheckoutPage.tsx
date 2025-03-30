@@ -7,34 +7,9 @@ import CustomerForm from '../../components/checkout/CustomerForm';
 import { customerService } from '../../services/customerService';
 import { createOrder } from '../../services/orderService';
 import { createCheckoutSession } from '../../services/stripeService';
+import { ICustomer, CustomerFormValues } from '../../models/ICustomer';
 import './CheckoutPage.scss';
 
-// Define the customer type based on your API
-interface Customer {
-  id: number;
-  email: string;
-  firstname: string;
-  lastname: string;
-  phone: string;
-  street_address: string;
-  postal_code: string;
-  city: string;
-  country: string;
-}
-
-// Define the form values type matching your CustomerForm component
-interface CustomerFormValues {
-  firstname: string;
-  lastname: string;
-  email: string;
-  phone: string;
-  street_address: string;
-  postal_code: string;
-  city: string;
-  country: string;
-}
-
-// Define the line item type for Stripe
 interface StripeLineItem {
   price_data: {
     currency: string;
@@ -54,15 +29,17 @@ const CheckoutPage = () => {
   );
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState('');
-  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [customer, setCustomer] = useState<ICustomer | null>(null);
 
-  const handleFormSubmit = async (customerData: CustomerFormValues) => {
+  const handleFormSubmit = async (formData: CustomerFormValues) => {
     try {
-      const existingCustomer = await customerService.getByEmail(
-        customerData.email
-      );
+      const existingCustomer = await customerService.getByEmail(formData.email);
       const currentCustomer =
-        existingCustomer || (await customerService.create(customerData));
+        existingCustomer ||
+        (await customerService.create({
+          ...formData,
+          password: undefined, // Explicitly undefined since it's optional
+        }));
       setCustomer(currentCustomer);
     } catch (err) {
       setError(
@@ -104,7 +81,7 @@ const CheckoutPage = () => {
           product_data: {
             name: item.name,
           },
-          unit_amount: Math.round(item.price * 100), // Convert to öre
+          unit_amount: Math.round(item.price * 100),
         },
         quantity: item.quantity,
       }));
@@ -116,10 +93,7 @@ const CheckoutPage = () => {
         cancel_url: `${window.location.origin}/checkout`,
       });
 
-      // 3. Clear cart (only after successful session creation)
       clearCart();
-
-      // 4. Redirect to Stripe hosted checkout
       window.location.href = sessionId;
     } catch (err) {
       console.error('Checkout failed:', err);
@@ -143,7 +117,6 @@ const CheckoutPage = () => {
   return (
     <div className="checkout-container">
       {isProcessing && <Spinner />}
-
       {error && <div className="error-message">{error}</div>}
 
       <section className="cart-summary-section">

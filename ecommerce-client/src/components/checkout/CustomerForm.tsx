@@ -1,55 +1,18 @@
-// src/components/checkout/CustomerForm.tsx
 import { useState, useEffect } from 'react';
+import {
+  CustomerFormValues,
+  CustomerFormErrors,
+  CustomerFormProps,
+} from '../../models/ICustomer';
 import './CustomerForm.scss';
-
-interface CustomerData {
-  email: string;
-  firstname: string;
-  lastname: string;
-  phone: string;
-  street_address: string;
-  postal_code: string;
-  city: string;
-  country: string;
-}
-
-interface FormErrors {
-  email?: string;
-  firstname?: string;
-  lastname?: string;
-  phone?: string;
-  street_address?: string;
-  postal_code?: string;
-  city?: string;
-  country?: string;
-}
-
-interface CustomerFormProps {
-  onValidSubmit: (data: CustomerData) => void;
-  disabled?: boolean;
-}
 
 const CustomerForm = ({
   onValidSubmit,
   disabled = false,
+  initialValues = {},
 }: CustomerFormProps) => {
-  const [formData, setFormData] = useState<CustomerData>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('customerFormData');
-      return saved
-        ? JSON.parse(saved)
-        : {
-            email: '',
-            firstname: '',
-            lastname: '',
-            phone: '',
-            street_address: '',
-            postal_code: '',
-            city: '',
-            country: 'Sweden', // Default value
-          };
-    }
-    return {
+  const [formData, setFormData] = useState<CustomerFormValues>(() => {
+    const defaultValues: CustomerFormValues = {
       email: '',
       firstname: '',
       lastname: '',
@@ -59,9 +22,15 @@ const CustomerForm = ({
       city: '',
       country: 'Sweden',
     };
+
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('customerFormData');
+      return saved ? JSON.parse(saved) : { ...defaultValues, ...initialValues };
+    }
+    return { ...defaultValues, ...initialValues };
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<CustomerFormErrors>({});
 
   useEffect(() => {
     localStorage.setItem('customerFormData', JSON.stringify(formData));
@@ -74,13 +43,13 @@ const CustomerForm = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     // Clear error when user starts typing
-    if (errors[name as keyof FormErrors]) {
+    if (errors[name as keyof CustomerFormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
   const validate = (): boolean => {
-    const newErrors: FormErrors = {};
+    const newErrors: CustomerFormErrors = {};
 
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -108,7 +77,6 @@ const CustomerForm = ({
       onValidSubmit(formData);
     }
   };
-
   return (
     <form className="customer-form" onSubmit={handleSubmit}>
       <h2>Customer Information</h2>
