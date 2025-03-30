@@ -37,7 +37,7 @@ export const CartDropdown = () => {
         </div>
       )}
 
-      <Link to="/cart" className="checkout-button">
+      <Link to="/checkout" className="checkout-button">
         Go to Checkout
       </Link>
     </div>
