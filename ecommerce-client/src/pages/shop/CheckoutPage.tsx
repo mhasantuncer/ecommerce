@@ -49,57 +49,21 @@ const CheckoutPage = () => {
   };
 
   const handlePayment = async () => {
-    if (!customer) {
-      setError('Please complete customer information first');
-      return;
-    }
-
     setIsProcessing(true);
     setError('');
 
     try {
-      // 1. Create order in database
-      const orderData = {
-        customer_id: customer.id,
-        payment_status: 'unpaid',
-        payment_id: '',
-        order_status: 'pending',
-        order_items: cartItems.map((item) => ({
-          product_id: item.id,
-          product_name: item.name,
-          quantity: item.quantity,
-          unit_price: item.price,
-        })),
-      };
-
-      const { id: orderId } = await createOrder(orderData);
-
-      // 2. Create Stripe checkout session
-      const lineItems: StripeLineItem[] = cartItems.map((item) => ({
-        price_data: {
-          currency: 'sek',
-          product_data: {
-            name: item.name,
-          },
-          unit_amount: Math.round(item.price * 100),
-        },
+      const lineItems = cartItems.map((item) => ({
+        name: item.name,
+        price: item.price,
         quantity: item.quantity,
       }));
 
-      const { sessionId } = await createCheckoutSession({
-        order_id: orderId,
-        line_items: lineItems,
-        success_url: `${window.location.origin}/order-confirmation?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${window.location.origin}/checkout`,
-      });
-
-      clearCart();
-      window.location.href = sessionId;
+      const checkoutUrl = await createCheckoutSession(lineItems);
+      window.location.href = checkoutUrl;
     } catch (err) {
-      console.error('Checkout failed:', err);
-      setError(
-        err instanceof Error ? err.message : 'Payment processing failed'
-      );
+      setError('Payment processing failed');
+      console.error('Checkout error:', err);
     } finally {
       setIsProcessing(false);
     }

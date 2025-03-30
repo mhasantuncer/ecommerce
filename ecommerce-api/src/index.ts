@@ -33,6 +33,8 @@ import customerRouter from './routes/customers';
 import orderRouter from './routes/orders';
 import orderItemRouter from './routes/orderItems';
 import authRouter from './routes/auth';
+import stripe from 'stripe';
+const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY!);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK' });
@@ -43,6 +45,26 @@ app.use('/customers', customerRouter);
 app.use('/orders', orderRouter);
 app.use('/order-items', orderItemRouter);
 app.use('/auth', authRouter);
+
+app.post(
+  '/stripe/create-checkout-session',
+  async (req: Request, res: Response) => {
+    try {
+      const session = await stripeClient.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: req.body.line_items,
+        mode: 'payment',
+        success_url: `${process.env.FRONTEND_URL}/order-confirmation?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.FRONTEND_URL}/checkout`,
+      });
+
+      res.json({ checkout_url: session.url });
+    } catch (error) {
+      console.error('Stripe error:', error);
+      res.status(500).json({ error: 'Checkout creation failed' });
+    }
+  }
+);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
