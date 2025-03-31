@@ -39,7 +39,7 @@ A full-stack e-commerce application with React, TypeScript, and Vite, featuring 
 ## 📂 Project Structure
 
 ```bash
-###Frontend
+### Frontend
   App.css
 │   App.tsx
 │   index.css
@@ -151,7 +151,7 @@ A full-stack e-commerce application with React, TypeScript, and Vite, featuring 
     └───core
             home.scss
 
-###Backend
+### Backend
 
  index.ts
 │
