@@ -4,7 +4,9 @@ import './CartSummary.scss';
 
 const CartSummary = () => {
   const { cartItems, updateQuantity, removeFromCart, totalPrice } = useCart();
-
+  const formatSEK = (amount: number) => {
+    return `${amount.toFixed(2)} SEK`;
+  };
   return (
     <div className="cart-summary">
       <h2>Your Order</h2>
@@ -36,14 +38,14 @@ const CartSummary = () => {
               </button>
             </div>
             <div className="item-price">
-              ${(item.price * item.quantity).toFixed(2)}
+              {formatSEK(item.price * item.quantity)}
             </div>
           </div>
         ))}
       </div>
       <div className="order-total">
         <span>Total:</span>
-        <span>${totalPrice.toFixed(2)}</span>
+        <span>{formatSEK(totalPrice)}</span>
       </div>
     </div>
   );

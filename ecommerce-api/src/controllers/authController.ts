@@ -1,42 +1,33 @@
+import { Request, Response } from 'express';
 import { db } from '../config/db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Request, RequestExtended, Response, NextFunction } from 'express';
 import { IUser } from '../models/IUser';
 import { logError } from '../utilities/logger';
 import { ResultSetHeader } from 'mysql2';
 
-// Token verification middleware
-export const verifyToken = (
-  req: RequestExtended,
-  res: Response,
-  next: NextFunction
-) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+// Helper functions
+const generateTokens = (userId: number, username: string) => {
+  const payload = { userId, username };
 
-  if (!token) return res.status(401).json({ error: 'Access token required' });
-
-  jwt.verify(
-    token,
-    process.env.ACCESS_TOKEN_SECRET as string,
-    (err, decoded) => {
-      if (err)
-        return res.status(403).json({ error: 'Invalid or expired token' });
-      req.user = decoded as { userId: number; username: string };
-      next();
-    }
-  );
+  return {
+    accessToken: jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET as string, {
+      expiresIn: '15m',
+    }),
+    refreshToken: jwt.sign(
+      payload,
+      process.env.REFRESH_TOKEN_SECRET as string, // Different secret for refresh tokens
+      { expiresIn: '7d' }
+    ),
+  };
 };
 
-// Login controller
-export const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      res.status(400).json({ error: 'Username and password required' });
-      return;
+      return res.status(400).json({ error: 'Username and password required' });
     }
 
     const [rows] = await db.query<IUser[]>(
@@ -44,34 +35,17 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       [username]
     );
 
-    if (!rows || rows.length === 0) {
-      res.status(401).json({ error: 'Invalid credentials' });
-      return;
+    const user = rows?.[0];
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const user = rows[0];
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      res.status(401).json({ error: 'Invalid credentials' });
-      return;
+    if (user.id === null) {
+      throw new Error('User ID is null');
     }
-
-    const tokenPayload = {
-      userId: user.id,
-      username: user.username,
-    };
-
-    const accessToken = jwt.sign(
-      tokenPayload,
-      process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '15m' }
-    );
-
-    const refreshToken = jwt.sign(
-      tokenPayload,
-      process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '7d' }
+    const { accessToken, refreshToken } = generateTokens(
+      user.id,
+      user.username
     );
 
     res.cookie('refreshToken', refreshToken, {
@@ -82,44 +56,32 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       path: '/auth/refresh-token',
     });
 
-    res.json({
+    return res.json({
       user: { id: user.id, username: user.username },
       token: accessToken,
       expiresIn: 15 * 60,
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Authentication failed' });
+    logError('Login error:', error);
+    return res.status(500).json({ error: 'Authentication failed' });
   }
 };
 
-// Refresh token controller
-export const refreshToken = async (
-  req: RequestExtended,
-  res: Response
-): Promise<void> => {
+export const refreshToken = async (req: Request, res: Response) => {
   try {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
-      res.status(401).json({ error: 'Refresh token required' });
-      return;
+      return res.status(401).json({ error: 'Refresh token required' });
     }
 
     const decoded = jwt.verify(
       refreshToken,
-      process.env.ACCESS_TOKEN_SECRET as string
+      process.env.REFRESH_TOKEN_SECRET as string
     ) as { userId: number; username: string };
 
-    const newAccessToken = jwt.sign(
-      { userId: decoded.userId, username: decoded.username },
-      process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '15m' }
-    );
-
-    const newRefreshToken = jwt.sign(
-      { userId: decoded.userId, username: decoded.username },
-      process.env.ACCESS_TOKEN_SECRET as string,
-      { expiresIn: '7d' }
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+      decoded.userId,
+      decoded.username
     );
 
     res.cookie('refreshToken', newRefreshToken, {
@@ -130,29 +92,28 @@ export const refreshToken = async (
       path: '/auth/refresh-token',
     });
 
-    res.json({
-      token: newAccessToken,
+    return res.json({
+      token: accessToken,
       expiresIn: 15 * 60,
     });
   } catch (error) {
-    console.error('Refresh token error:', error);
-    res.status(403).json({ error: 'Invalid refresh token' });
+    logError('Refresh token error:', error);
+    return res.status(403).json({ error: 'Invalid refresh token' });
   }
 };
 
-// Registration controller
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      res.status(400).json({ error: 'Username and password required' });
-      return;
+      return res.status(400).json({ error: 'Username and password required' });
     }
 
     if (password.length < 8) {
-      res.status(400).json({ error: 'Password must be at least 8 characters' });
-      return;
+      return res
+        .status(400)
+        .json({ error: 'Password must be at least 8 characters' });
     }
 
     const [existingUsers] = await db.query<IUser[]>(
@@ -160,9 +121,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       [username]
     );
 
-    if (existingUsers && existingUsers.length > 0) {
-      res.status(409).json({ error: 'Username already exists' });
-      return;
+    if (existingUsers?.length) {
+      return res.status(409).json({ error: 'Username already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -171,21 +131,20 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       [username, hashedPassword]
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       id: result.insertId,
       username,
       message: 'User registered successfully',
     });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ error: 'Registration failed' });
+    logError('Registration error:', error);
+    return res.status(500).json({ error: 'Registration failed' });
   }
 };
 
-// Logout controller
-export const logout = (req: Request, res: Response): void => {
+export const logout = (req: Request, res: Response) => {
   res.clearCookie('refreshToken', {
     path: '/auth/refresh-token',
   });
-  res.json({ message: 'Logged out successfully' });
+  return res.json({ message: 'Logged out successfully' });
 };

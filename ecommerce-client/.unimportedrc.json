@@ -1,0 +1,14 @@
+{
+  "ignoreUnresolved": [],
+  "ignoreUnused": [
+    "@stripe/react-stripe-js"
+  ],
+  "ignoreUnimported": [
+    "D:\\Medie\\0-Systemstöd\\2-Inlämningsuppgifter\\01\\ecommerce\\ecommerce-client\\src\\App.tsx",
+    "D:\\Medie\\0-Systemstöd\\2-Inlämningsuppgifter\\01\\ecommerce\\ecommerce-client\\src\\components\\ProductSkeleton.tsx",
+    "D:\\Medie\\0-Systemstöd\\2-Inlämningsuppgifter\\01\\ecommerce\\ecommerce-client\\src\\models\\ICart.ts",
+    "D:\\Medie\\0-Systemstöd\\2-Inlämningsuppgifter\\01\\ecommerce\\ecommerce-client\\src\\pages\\LoginPage.tsx",
+    "D:\\Medie\\0-Systemstöd\\2-Inlämningsuppgifter\\01\\ecommerce\\ecommerce-client\\src\\pages\\admin\\AdminPage.tsx",
+    "D:\\Medie\\0-Systemstöd\\2-Inlämningsuppgifter\\01\\ecommerce\\ecommerce-client\\src\\services\\stripeWebhookService.ts"
+  ]
+}

@@ -5,7 +5,6 @@ import { Spinner } from '../../components/Spinner';
 import CartSummary from '../../components/checkout/CartSummary';
 import CustomerForm from '../../components/checkout/CustomerForm';
 import { customerService } from '../../services/customerService';
-import { createOrder } from '../../services/orderService';
 import { createCheckoutSession } from '../../services/stripeService';
 import { ICustomer, CustomerFormValues } from '../../models/ICustomer';
 import './CheckoutPage.scss';
