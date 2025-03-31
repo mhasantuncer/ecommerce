@@ -114,13 +114,13 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // Admin Routes with dedicated AdminLayout
+
       {
         path: 'admin',
         element: (
           <Suspense fallback={<Spinner />}>
             <ProtectedRoute>
-              <AdminLayout /> {/* Using dedicated admin layout */}
+              <AdminLayout />
             </ProtectedRoute>
           </Suspense>
         ),

@@ -1,4 +1,3 @@
-// src/components/checkout/CartSummary.tsx
 import { useCart } from '../../hooks/useCart';
 import './CartSummary.scss';
 

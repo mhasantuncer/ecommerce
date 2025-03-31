@@ -23,8 +23,8 @@
 
 .nav-list {
   display: flex;
-  align-items: center; // Center all items vertically
-  height: 100%; // Take full nav height
+  align-items: center;
+  height: 100%;
   gap: 1.5rem;
 }
 
@@ -100,7 +100,6 @@
   font-weight: bold;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   .nav {
     flex-direction: column;
@@ -119,7 +118,6 @@
   }
 }
 
-/* Mobile Menu Styles */
 .hamburger {
   display: none;
   background: none;
@@ -182,17 +180,17 @@
   }
   .nav-item {
     .nav-link {
-      padding: 0.25rem; // Tighter padding
+      padding: 0.25rem;
     }
   }
 }
 
 @media (min-width: 768px) {
   .nav {
-    padding: 0 2rem; // Consistent side padding
+    padding: 0 2rem;
   }
 
   .nav-brand {
-    margin-right: auto; // Pushes brand left, items right
+    margin-right: auto;
   }
 }

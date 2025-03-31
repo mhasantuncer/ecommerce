@@ -1,19 +1,16 @@
-// src/services/adminService.ts
 import axios from 'axios';
 import { ILoginResponse } from '../models/IAuth';
 
-const API_URL = 'http://localhost:3000/auth'; // ✅ Fixed API Base URL
+const API_URL = 'http://localhost:3000/auth';
 console.log('API Base URL:', API_URL);
 
-// Initialize axios instance
 const api = axios.create({
-  baseURL: API_URL, // ✅ Now all requests use /auth as the base path
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Auth token management
 let authToken: string | null = null;
 
 export const setAuthToken = (token: string | null) => {
@@ -27,7 +24,6 @@ export const setAuthToken = (token: string | null) => {
   }
 };
 
-// Initialize token from storage
 if (typeof window !== 'undefined') {
   const storedToken = localStorage.getItem('admin_token');
   if (storedToken) setAuthToken(storedToken);
@@ -38,26 +34,31 @@ export const authService = {
     username: string,
     password: string
   ): Promise<ILoginResponse> => {
-    console.log('Attempting to reach:', `${API_URL}/login`); // Debug line
+    console.log('Attempting to reach:', `${API_URL}/login`);
 
     try {
-      const response = await api.post('/login', { username, password }); // ✅ Fixed path
-      console.log('Login successful:', response.data); // Debug line
+      const response = await api.post('/login', { username, password });
+      console.log('Login successful:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Full error details:', {
-        config: error.config,
-        request: error.request,
-        response: error.response?.data,
-      });
+      if (axios.isAxiosError(error)) {
+        console.error(
+          'Token refresh error:',
+          error.response?.data || error.message
+        );
+      } else if (error instanceof Error) {
+        console.error('Token refresh error:', error.message);
+      } else {
+        console.error('Token refresh error: An unexpected error occurred');
+      }
+      setAuthToken(null);
       throw error;
     }
   },
 
   logout: async (): Promise<void> => {
     try {
-      await api.post('/clear-token'); // ✅ Fixed path
-      setAuthToken(null);
+      await api.post('/clear-token');
     } catch (error) {
       console.error('Logout error:', error);
       throw error;
@@ -66,12 +67,12 @@ export const authService = {
 
   refreshToken: async (): Promise<ILoginResponse> => {
     try {
-      const response = await api.post<ILoginResponse>('/refresh-token'); // ✅ Fixed path
+      const response = await api.post<ILoginResponse>('/refresh-token');
       setAuthToken(response.data.token);
       return response.data;
     } catch (error) {
       console.error('Token refresh error:', error);
-      setAuthToken(null); // Clear token if refresh fails
+      setAuthToken(null);
       throw error;
     }
   },

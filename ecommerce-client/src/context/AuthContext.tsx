@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextType {

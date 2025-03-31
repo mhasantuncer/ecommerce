@@ -1,10 +1,8 @@
-// src/services/customerService.ts
 import axios from 'axios';
 import { ICustomer, CustomerCreate } from '../models/ICustomer';
 
 const API_BASE_URL = 'http://localhost:3000';
 
-// Check if customer exists by email
 export const getCustomerByEmail = async (
   email: string
 ): Promise<ICustomer | null> => {
@@ -15,18 +13,16 @@ export const getCustomerByEmail = async (
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      return null; // Customer not found
+      return null;
     }
-    throw error; // Re-throw other errors
+    throw error;
   }
 };
 
-// Create new customer (without password)
 export const createCustomer = async (
   customerData: CustomerCreate
 ): Promise<ICustomer> => {
   try {
-    // Remove password field if empty (since it's optional in your API)
     const { password, ...data } = customerData;
     const payload = password ? customerData : data;
 
@@ -40,7 +36,6 @@ export const createCustomer = async (
   }
 };
 
-// Update customer (optional - for future use)
 export const updateCustomer = async (
   id: number,
   customerData: Partial<CustomerCreate>
@@ -52,7 +47,6 @@ export const updateCustomer = async (
   return response.data;
 };
 
-// Customer service with all methods
 export const customerService = {
   getByEmail: getCustomerByEmail,
   create: createCustomer,

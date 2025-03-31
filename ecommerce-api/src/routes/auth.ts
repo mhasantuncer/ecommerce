@@ -4,7 +4,6 @@ import {
   register,
   refreshToken,
   logout,
-  verifyToken,
 } from '../controllers/authController';
 
 const router = Router();

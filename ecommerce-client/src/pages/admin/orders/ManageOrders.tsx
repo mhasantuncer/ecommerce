@@ -1,4 +1,3 @@
-// src/pages/admin/orders/ManageOrders.tsx
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { IOrder } from '../../../models/IOrder';
@@ -65,14 +64,12 @@ const ManageOrders = () => {
   const applyFilters = useCallback(() => {
     let filtered = orders;
 
-    // Apply status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(
         (order) => order.order_status === statusFilter
       );
     }
 
-    // Apply search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(

@@ -69,9 +69,8 @@
   }
 }
 
-/* Add to Cart Button */
 .add-to-cart {
-  @include mix.cta-button; // Inherits your button styles
+  @include mix.cta-button;
   align-self: center;
   margin-top: 1rem;
   display: inline-flex;
@@ -99,7 +98,6 @@
   }
 }
 
-/* Stock Status with Animation */
 .stock-status {
   display: inline-block;
   padding: 0.3rem 0.6rem;
@@ -151,7 +149,6 @@
   }
 }
 
-/* Loading State Enhancements */
 .loading-indicator {
   animation: pulse 1.5s infinite ease-in-out;
 }

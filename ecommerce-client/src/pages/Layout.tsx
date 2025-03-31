@@ -1,4 +1,3 @@
-// src/pages/Layout.tsx
 import { Outlet } from 'react-router-dom';
 import { Header } from '../components/Header';
 import '../styles/layout.scss';

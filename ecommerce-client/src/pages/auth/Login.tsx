@@ -1,9 +1,8 @@
-// src/pages/auth/Login.tsx
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { authService } from '../../services/adminService';
-import './Login.scss'; // Optional styling file
+import './Login.scss';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -15,13 +14,13 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log('Attempting login with:', { username, password }); // Log input
+      console.log('Attempting login with:', { username, password });
       const { token } = await authService.login(username, password);
-      console.log('Login successful, token:', token); // Log success
+      console.log('Login successful, token:', token);
       login(token);
       navigate('/admin/products');
     } catch (err) {
-      console.error('Full login error:', err); // Detailed error log
+      console.error('Full login error:', err);
       setError('Invalid username or password');
     }
   };
@@ -55,7 +54,6 @@ const Login = () => {
           Login
         </button>
       </form>
-      {/* Add forgot password or other links if needed */}
     </div>
   );
 };

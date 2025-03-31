@@ -1,4 +1,3 @@
-// src/components/CartDropdown.tsx
 import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import '../styles/cartdropdown.scss';

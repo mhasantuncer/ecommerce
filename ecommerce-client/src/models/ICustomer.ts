@@ -12,7 +12,6 @@ export interface ICustomer {
   created_at: string;
 }
 
-// For form data (without id, created_at, and optional password)
 export type CustomerFormValues = Pick<
   ICustomer,
   | 'firstname'
@@ -24,10 +23,9 @@ export type CustomerFormValues = Pick<
   | 'city'
   | 'country'
 > & {
-  password?: string; // Explicitly optional
+  password?: string;
 };
 
-// For API create operations (matches your existing CustomerCreate)
 export type CustomerCreate = Pick<
   ICustomer,
   | 'firstname'
@@ -41,10 +39,8 @@ export type CustomerCreate = Pick<
   | 'country'
 >;
 
-// For API update operations (matches your existing CustomerUpdate)
 export type CustomerUpdate = Partial<CustomerCreate>;
 
-// For form validation errors
 export interface CustomerFormErrors {
   firstname?: string;
   lastname?: string;
@@ -56,7 +52,6 @@ export interface CustomerFormErrors {
   country?: string;
 }
 
-// Props for CustomerForm component
 export interface CustomerFormProps {
   onValidSubmit: (values: CustomerFormValues) => void;
   disabled?: boolean;

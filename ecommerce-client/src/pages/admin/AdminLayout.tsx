@@ -1,4 +1,3 @@
-// src/pages/admin/AdminLayout.tsx
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import './AdminLayout.scss';
 
@@ -9,7 +8,6 @@ const AdminLayout = () => {
 
   return (
     <div className="admin-layout">
-      {/* Breadcrumb Navigation */}
       <nav className="admin-breadcrumb">
         <Link to="/admin">Admin</Link>
         {pathSegments.length > 1 && (
@@ -22,7 +20,6 @@ const AdminLayout = () => {
         )}
       </nav>
 
-      {/* Main Content Area */}
       <main className="admin-content">
         <Outlet />
       </main>

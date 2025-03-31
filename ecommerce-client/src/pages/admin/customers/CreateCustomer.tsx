@@ -1,10 +1,9 @@
-// src/pages/admin/customers/CreateCustomer.tsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { CustomerCreate } from '../../../models/ICustomer';
 import axios from 'axios';
-import './CreateCustomer.scss'; // We'll create this CSS file
+import './CreateCustomer.scss';
 
 const CreateCustomer = () => {
   const navigate = useNavigate();
@@ -56,8 +55,14 @@ const CreateCustomer = () => {
         country: '',
       });
       setTimeout(() => navigate('/admin/customers'), 2000);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create customer');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || 'Failed to create customer');
+      } else if (err instanceof Error) {
+        setError(err.message || 'An unexpected error occurred');
+      } else {
+        setError('An unexpected error occurred');
+      }
       console.error('Error creating customer:', err);
     } finally {
       setLoading(false);

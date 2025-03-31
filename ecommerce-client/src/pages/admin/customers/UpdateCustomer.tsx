@@ -1,10 +1,9 @@
-// src/pages/admin/customers/UpdateCustomer.tsx
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { ICustomer, CustomerUpdate } from '../../../models/ICustomer';
 import axios from 'axios';
-import './UpdateCustomer.scss'; // We'll create this CSS file
+import './UpdateCustomer.scss';
 
 const UpdateCustomer = () => {
   const { id } = useParams<{ id: string }>();

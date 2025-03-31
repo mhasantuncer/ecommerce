@@ -1,4 +1,3 @@
-// src/pages/shop/OrderConfirmation.tsx
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getOrderByPaymentId } from '../../services/orderService';
@@ -26,7 +25,6 @@ const OrderConfirmation = () => {
         const orderData = await getOrderByPaymentId(sessionId);
         setOrder(orderData);
 
-        // Clear storage
         localStorage.removeItem('cart');
         localStorage.removeItem('customerFormData');
       } catch (err) {

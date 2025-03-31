@@ -1,10 +1,9 @@
-// src/models/IAuth.ts
 export interface ILoginResponse {
   user: {
     username: string;
   };
-  expires_in: number; // Token expiry in seconds
-  token: string; // JWT token
+  expires_in: number;
+  token: string;
 }
 
 export interface IAuthContext {

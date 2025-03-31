@@ -1,4 +1,3 @@
-// src/pages/admin/orders/OrderDetails.tsx
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';

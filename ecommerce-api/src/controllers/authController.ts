@@ -22,12 +22,13 @@ const generateTokens = (userId: number, username: string) => {
   };
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password required' });
+      res.status(400).json({ error: 'Username and password required' });
+      return;
     }
 
     const [rows] = await db.query<IUser[]>(
@@ -37,7 +38,8 @@ export const login = async (req: Request, res: Response) => {
 
     const user = rows?.[0];
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'Invalid credentials' });
+      return;
     }
 
     if (user.id === null) {
@@ -56,22 +58,28 @@ export const login = async (req: Request, res: Response) => {
       path: '/auth/refresh-token',
     });
 
-    return res.json({
+    res.json({
       user: { id: user.id, username: user.username },
       token: accessToken,
       expiresIn: 15 * 60,
     });
+    return;
   } catch (error) {
     logError('Login error:', error);
-    return res.status(500).json({ error: 'Authentication failed' });
+    res.status(500).json({ error: 'Authentication failed' });
+    return;
   }
 };
 
-export const refreshToken = async (req: Request, res: Response) => {
+export const refreshToken = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
-      return res.status(401).json({ error: 'Refresh token required' });
+      res.status(401).json({ error: 'Refresh token required' });
+      return;
     }
 
     const decoded = jwt.verify(
@@ -92,28 +100,27 @@ export const refreshToken = async (req: Request, res: Response) => {
       path: '/auth/refresh-token',
     });
 
-    return res.json({
+    res.json({
       token: accessToken,
       expiresIn: 15 * 60,
     });
+    return;
   } catch (error) {
     logError('Refresh token error:', error);
-    return res.status(403).json({ error: 'Invalid refresh token' });
+    res.status(403).json({ error: 'Invalid refresh token' });
   }
 };
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password required' });
+      res.status(400).json({ error: 'Username and password required' });
     }
 
     if (password.length < 8) {
-      return res
-        .status(400)
-        .json({ error: 'Password must be at least 8 characters' });
+      res.status(400).json({ error: 'Password must be at least 8 characters' });
     }
 
     const [existingUsers] = await db.query<IUser[]>(
@@ -122,7 +129,8 @@ export const register = async (req: Request, res: Response) => {
     );
 
     if (existingUsers?.length) {
-      return res.status(409).json({ error: 'Username already exists' });
+      res.status(409).json({ error: 'Username already exists' });
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -131,20 +139,21 @@ export const register = async (req: Request, res: Response) => {
       [username, hashedPassword]
     );
 
-    return res.status(201).json({
+    res.status(201).json({
       id: result.insertId,
       username,
       message: 'User registered successfully',
     });
   } catch (error) {
     logError('Registration error:', error);
-    return res.status(500).json({ error: 'Registration failed' });
+    res.status(500).json({ error: 'Registration failed' });
+    return;
   }
 };
 
-export const logout = (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response): Promise<void> => {
   res.clearCookie('refreshToken', {
     path: '/auth/refresh-token',
   });
-  return res.json({ message: 'Logged out successfully' });
+  res.json({ message: 'Logged out successfully' });
 };

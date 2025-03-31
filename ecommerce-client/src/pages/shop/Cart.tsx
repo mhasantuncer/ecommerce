@@ -1,4 +1,3 @@
-// src/pages/shop/CartPage.tsx
 import { useCart } from '../../hooks/useCart';
 import { Link } from 'react-router-dom';
 import '../../styles/cartpage.scss';
@@ -8,7 +7,6 @@ const CartPage = () => {
     cartItems,
     totalItems,
     totalPrice,
-    addToCart,
     removeFromCart,
     updateQuantity,
     clearCart,

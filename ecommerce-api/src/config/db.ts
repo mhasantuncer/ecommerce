@@ -25,9 +25,9 @@ export const connectDB = async () => {
     const conn = await db.getConnection();
     await conn.ping();
     conn.release();
-    console.log('✅ Database connected');
+    console.log(' Database connected');
   } catch (error) {
-    console.error('❌ Database connection failed:', error);
+    console.error('Database connection failed:', error);
     // Crash immediately if DB is essential
     process.exit(1);
   }

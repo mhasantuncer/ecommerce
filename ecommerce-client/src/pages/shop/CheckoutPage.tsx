@@ -1,4 +1,3 @@
-// src/pages/shop/CheckoutPage.tsx
 import { useState } from 'react';
 import { useCart } from '../../hooks/useCart';
 import { Spinner } from '../../components/Spinner';
@@ -9,19 +8,8 @@ import { createCheckoutSession } from '../../services/stripeService';
 import { ICustomer, CustomerFormValues } from '../../models/ICustomer';
 import './CheckoutPage.scss';
 
-interface StripeLineItem {
-  price_data: {
-    currency: string;
-    product_data: {
-      name: string;
-    };
-    unit_amount: number;
-  };
-  quantity: number;
-}
-
 const CheckoutPage = () => {
-  const { cartItems, clearCart } = useCart();
+  const { cartItems } = useCart();
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -37,7 +25,7 @@ const CheckoutPage = () => {
         existingCustomer ||
         (await customerService.create({
           ...formData,
-          password: undefined, // Explicitly undefined since it's optional
+          password: undefined,
         }));
       setCustomer(currentCustomer);
     } catch (err) {

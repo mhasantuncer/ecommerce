@@ -2,7 +2,6 @@ import axios from 'axios';
 import { handleRequest } from './baseService';
 import { IOrder, IOrderItem } from '../models/IOrder';
 
-// Create new order
 export const createOrder = async (orderData: {
   customer_id: number;
   order_items: IOrderItem[];
@@ -17,7 +16,6 @@ export const createOrder = async (orderData: {
   return handleRequest(axios.post('http://localhost:3000/orders', payload));
 };
 
-// Add this to your existing orderService.ts
 export const updateOrder = async (
   orderId: number,
   updateData: {
@@ -31,7 +29,6 @@ export const updateOrder = async (
   );
 };
 
-// Update order with Stripe session ID
 export const updateOrderWithSessionId = async (
   orderId: number,
   sessionId: string
@@ -43,11 +40,8 @@ export const updateOrderWithSessionId = async (
   );
 };
 
-// Fetch order by payment ID
 export const getOrderByPaymentId = async (
   paymentId: string
 ): Promise<IOrder> => {
-  return handleRequest(
-    axios.get(`http://localhost:3000/orders/payment/${paymentId}`)
-  );
+  return handleRequest(axios.get(`http://localhost:3000/orders/${paymentId}`));
 };

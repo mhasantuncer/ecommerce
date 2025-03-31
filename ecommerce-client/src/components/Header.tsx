@@ -1,4 +1,3 @@
-// src/components/Header.tsx
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { CartDropdown } from './CartDropdown';
@@ -11,7 +10,6 @@ export const Header = () => {
   const { totalItems } = useCart();
   const navRef = useRef<HTMLDivElement>(null);
 
-  // Click outside handler (for both menu and cart)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {

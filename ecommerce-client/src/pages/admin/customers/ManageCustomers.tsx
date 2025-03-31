@@ -1,4 +1,3 @@
-// src/pages/admin/customers/ManageCustomers.tsx
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { ICustomer } from '../../../models/ICustomer';

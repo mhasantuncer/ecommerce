@@ -4,13 +4,13 @@ import { useProduct } from '../../../hooks/useProduct';
 import { IProduct } from '../../../models/IProduct';
 import '../../../styles/productdetails.scss';
 import { Spinner } from '../../../components/Spinner';
-import { useCart } from '../../../context/CartContext'; // Import cart context
+import { useCart } from '../../../context/CartContext';
 
 const ProductDetails = () => {
   const [product, setProduct] = useState<IProduct | null>(null);
   const { id } = useParams();
   const { isLoading, error, fetchProductByIdHandler } = useProduct();
-  const { addToCart } = useCart(); // Get addToCart function from context
+  const { addToCart } = useCart();
 
   useEffect(() => {
     if (!id) return;

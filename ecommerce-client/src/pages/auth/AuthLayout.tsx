@@ -1,12 +1,11 @@
-// src/pages/auth/AuthLayout.tsx
 import { Outlet } from 'react-router-dom';
-import './AuthLayout.scss'; // Optional styling file
+import './AuthLayout.scss';
 
 export const AuthLayout = () => {
   return (
     <div className="auth-layout">
       <div className="auth-container">
-        <Outlet /> {/* This will render the Login component */}
+        <Outlet />
       </div>
     </div>
   );
